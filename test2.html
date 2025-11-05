@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AIGradeMe Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+    input, button { margin: 5px 0; display: block; }
+    #results { border: 1px solid #ccc; padding: 15px; margin-top: 20px; background: #f9f9f9; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 3px 0; }
+  </style>
+</head>
+<body>
+
+<h1>AIGradeMe Test Form</h1>
+
+<form id="grade-form">
+  <label>Name:</label>
+  <input type="text" name="name" required>
+
+  <label>Email:</label>
+  <input type="email" name="email" required>
+
+  <label>Sketch (image file):</label>
+  <input type="file" name="image" accept="image/*" required>
+
+  <button type="submit">Submit</button>
+</form>
+
+<div id="results"></div>
+
+<script>
+  // REPLACE this with your Render backend URL
+  const BACKEND_URL = "https://aigrademe-backend.onrender.com";
+
+  async function submitForm(event) {
+    event.preventDefault();
+
+    const formData = new FormData(document.getElementById("grade-form"));
+    const resultsDiv = document.getElementById("results");
+
+    resultsDiv.innerHTML = "Submitting...";
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/submit`, {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        resultsDiv.innerHTML = "Error: " + response.status + " " + response.statusText;
+        return;
+      }
+
+      const data = await response.json();
+
+      resultsDiv.innerHTML = `
+        <h2>Results for ${data.name}</h2>
+        <p>Email: ${data.email}</p>
+        <p>Feedback: ${data.feedback}</p>
+        <p><strong>Total Score: ${data.total}</strong></p>
+        <ul>
+          <li>Sketch: ${data.scores.sketch}</li>
+          <li>Description: ${data.scores.description}</li>
+          <li>Dimensions: ${data.scores.dimensions}</li>
+          <li>Scale: ${data.scores.scale}</li>
+          <li>Compass: ${data.scores.compass}</li>
+          <li>Differences: ${data.scores.differences}</li>
+        </ul>
+      `;
+    } catch (err) {
+      console.error("Fetch error:", err);
+      resultsDiv.innerHTML = "Error submitting: " + err;
+    }
+  }
+
+  document.getElementById("grade-form").addEventListener("submit", submitForm);
+</script>
+
+</body>
+</html>
