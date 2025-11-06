@@ -48,10 +48,12 @@
             .form-area, .content { padding: 40px 30px; }
             .file-label { padding: 40px 16px; }
             
+            /* PERFECTLY CENTERED SCORE */
             .header .score { 
                 font-size: 80px !important; 
-                letter-spacing: -4px; 
-                word-spacing: -10px;
+                letter-spacing: 4px !important;  /* ← THIS FIXES THE UNEVEN SPACING */
+                word-spacing: normal;
+                margin-left: -8px; /* tiny nudge for optical perfection */
             }
             
             .feedback {
@@ -62,7 +64,6 @@
                 border-top: 8px solid #22c55e;
             }
 
-            /* FIXED: "Sketch Quality0/25" → "Sketch Quality 0/25" */
             .value {
                 padding-left: 20px !important;
                 letter-spacing: 1.5px;
