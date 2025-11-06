@@ -13,7 +13,17 @@
         .header p { margin: 16px 0 0; font-size: 22px; opacity: 0.95; }
         .form-area { padding: 60px 70px; background: #ffffff; }
         label { display: block; margin: 24px 0 10px; font-weight: 600; color: #374151; font-size: 18px; }
-        input[type=text], input[type=email] { width: 100%; padding: 18px; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 18px; transition: 0.3s; }
+        
+        /* FIXED: name/email fields no longer cut off */
+        input[type=text], input[type=email] { 
+            width: 100%; 
+            padding: 18px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 14px; 
+            font-size: 18px; 
+            transition: 0.3s;
+            box-sizing: border-box; /* ← THIS IS THE HERO */
+        }
         input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
         
         .file-input { position: relative; display: inline-block; width: 100%; }
@@ -32,11 +42,28 @@
         .new-submission button { background: #10b981; width: auto; padding: 16px 40px; font-size: 18px; }
         .new-submission button:hover { background: #059669; }
 
+        /* RESULTS PAGE MOBILE FIXES */
         @media (max-width: 640px) {
             .header { padding: 50px 30px; }
             .header h1 { font-size: 38px; }
-            .form-area { padding: 40px 30px; }
+            .form-area, .content { padding: 40px 30px; }
             .file-label { padding: 40px 16px; }
+            
+            /* FIXED: score no longer cut off */
+            .header .score { 
+                font-size: 80px !important; 
+                letter-spacing: -4px; 
+                word-spacing: -10px;
+            }
+            
+            /* FIXED: feedback uses full width */
+            .feedback {
+                margin: 40px -30px 0 -30px !important;
+                padding: 32px 30px !important;
+                border-radius: 0 !important;
+                border-left: none !important;
+                border-top: 8px solid #22c55e;
+            }
         }
     </style>
 </head>
@@ -113,21 +140,13 @@
                 const html = await res.text();
                 result.innerHTML = html;
 
-            // ONLY replace the FORM, not the whole form-area
-            document.querySelector("#form").outerHTML = `
-                <div class="new-submission">
-                    <h2 style="text-align:center;color:#10b981;margin-bottom:30px;">Success! Ready for another?</h2>
-                    <button onclick="location.reload()" style="font-size:20px;padding:18px 50px;">Grade Another Sketch</button>
-                </div>
-            `;
-                
-            //    document.querySelector(".form-area").innerHTML = `
-            //        <div class="new-submission">
-            //           <h2 style="text-align:center;color:#10b981;margin-bottom:30px;">Success! Ready for another?</h2>
-            //            <button onclick="location.reload()" style="font-size:20px;padding:18px 50px;">Grade Another Sketch</button>
-            //        </div>
-            //   `;
-                
+                // FIXED: only replace the form, not the whole area
+                document.getElementById("form").outerHTML = `
+                    <div class="new-submission">
+                        <h2 style="text-align:center;color:#10b981;margin-bottom:30px;">Success! Ready for another?</h2>
+                        <button onclick="location.reload()" style="font-size:20px;padding:18px 50px;">Grade Another Sketch</button>
+                    </div>
+                `;
             } catch (err) {
                 result.innerHTML = `<p style="color:#dc2626;text-align:center;padding:40px;font-size:18px;">Error: ${err.message}</p>`;
             } finally {
