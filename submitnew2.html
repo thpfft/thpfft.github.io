@@ -397,6 +397,11 @@
                     body: formData
                 });
 
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Server error ${response.status}: ${text.substring(0, 200)}`);
+                }
+
                 const html = await response.text();
                 resultDiv.innerHTML = html;
 
