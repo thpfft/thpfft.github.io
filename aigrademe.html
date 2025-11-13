@@ -42,7 +42,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #4c1d95, #7c3aed);
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
             color: white;
             padding: 70px 50px;
             text-align: center;
@@ -293,13 +293,29 @@
                 padding-left: 20px !important;
                 letter-spacing: 1.5px;
             }
+
+            #result > .card {
+                margin: 0 -30px !important;
+            }
         }
+
+        /* Remove inner box when result is shown */
+            #result > .card {
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                margin: 0 -70px !important;
+                overflow: hidden;
+            }
+            #result > .card .header {
+                border-radius: 0 !important;
+        }
+        
     </style>
 </head>
 <body>
 
     <!-- ======= MAIN CONTAINER ======= -->
-    <div class="container" style="border-radius:0; box-shadow:none;">
+    <div class="container">
         <header class="header">
             <h1>AIGradeMe</h1>
             <p>Upload your work and get instant AI grading</p>
