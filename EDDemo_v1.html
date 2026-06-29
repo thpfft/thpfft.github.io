@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; media-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>EDDemo v1 — Elkhart Dental Partner Review</title>
+<style>
+:root{
+  --ink:#15252b;
+  --muted:#5f7076;
+  --paper:#f4f7f6;
+  --card:#ffffff;
+  --line:#d9e2df;
+  --teal:#1f6f6a;
+  --teal-2:#2d8a82;
+  --mint:#dff2ee;
+  --navy:#17324a;
+  --amber:#a86816;
+  --amber-bg:#fff2dc;
+  --red:#9c3c36;
+  --red-bg:#fde9e7;
+  --green:#2d7450;
+  --green-bg:#e3f3e9;
+  --shadow:0 16px 42px rgba(29,55,60,.12);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(45,138,130,.10), transparent 32rem),
+    linear-gradient(180deg,#f9fbfa 0%,var(--paper) 100%);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.5;
+}
+button,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid rgba(31,111,106,.28);outline-offset:2px}
+.hidden{display:none!important}
+.confidential-bar{
+  position:sticky;top:0;z-index:1300;
+  min-height:32px;padding:7px 16px;
+  background:#102a31;color:#f5fbfa;text-align:center;
+  font-size:12px;font-weight:800;letter-spacing:.09em
+}
+.demo-pill{
+  position:fixed;right:16px;bottom:16px;z-index:1700;
+  background:#102a31;color:#fff;border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;padding:9px 13px;font-size:11px;font-weight:900;letter-spacing:.08em;
+  box-shadow:var(--shadow)
+}
+.kicker{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+h1,h2,h3,h4,p{margin-top:0}
+h1{font-size:clamp(34px,6vw,68px);line-height:1.02;letter-spacing:-.045em;margin-bottom:18px}
+h2{font-size:clamp(27px,3.2vw,42px);line-height:1.08;letter-spacing:-.035em}
+h3{font-size:19px;line-height:1.25}
+p{color:var(--muted)}
+.small{font-size:12px}
+.muted{color:var(--muted)}
+.strong{font-weight:800;color:var(--ink)}
+.landing{
+  min-height:calc(100vh - 32px);
+  padding:72px clamp(20px,5vw,76px) 70px;
+  max-width:1420px;margin:0 auto
+}
+.landing-hero{
+  display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);
+  gap:42px;align-items:end
+}
+.brand-lockup{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.brand-mark{
+  width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,var(--teal),#153f4e);
+  position:relative;box-shadow:0 10px 28px rgba(31,111,106,.22)
+}
+.brand-mark:before,.brand-mark:after{content:"";position:absolute;background:white;border-radius:999px}
+.brand-mark:before{width:10px;height:30px;left:13px;top:9px;transform:rotate(-28deg)}
+.brand-mark:after{width:10px;height:30px;right:13px;top:9px;transform:rotate(28deg)}
+.brand-title{font-weight:900;letter-spacing:-.02em}
+.hero-note{
+  background:rgba(255,255,255,.74);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)
+}
+.hero-note .status-line{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.hero-note .status-line:last-child{border-bottom:0}
+.strategy-strip{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:44px 0 34px
+}
+.story-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;min-height:150px;
+  box-shadow:0 8px 24px rgba(29,55,60,.06)
+}
+.story-card .num{font-size:11px;font-weight:900;color:var(--teal);letter-spacing:.14em}
+.story-card h3{margin:10px 0 8px}
+.story-card p{font-size:14px;margin-bottom:0}
+.mode-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:14px}
+.mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mode-card{
+  border:1px solid var(--line);background:var(--card);border-radius:20px;padding:24px;text-align:left;
+  min-height:220px;box-shadow:0 10px 30px rgba(29,55,60,.07);transition:.2s ease
+}
+.mode-card:hover{transform:translateY(-3px);border-color:rgba(31,111,106,.45);box-shadow:var(--shadow)}
+.mode-card .icon{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--mint);
+  color:var(--teal);font-size:21px;font-weight:900;margin-bottom:22px
+}
+.mode-card h3{margin-bottom:8px}
+.mode-card p{font-size:14px;margin-bottom:20px}
+.mode-card .launch{font-size:12px;color:var(--teal);font-weight:900;letter-spacing:.07em}
+.app{min-height:calc(100vh - 32px)}
+.app-header{
+  position:sticky;top:32px;z-index:1200;background:rgba(249,251,250,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(260px,1fr) auto auto;
+  gap:18px;align-items:center;padding:14px 20px
+}
+.app-title{display:flex;align-items:center;gap:12px;min-width:0}
+.app-title .brand-mark{width:38px;height:38px;border-radius:12px;flex:0 0 auto}
+.app-title .brand-mark:before{width:8px;height:24px;left:10px;top:7px}
+.app-title .brand-mark:after{width:8px;height:24px;right:10px;top:7px}
+.app-title-text{min-width:0}
+.app-title-text strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app-title-text span{font-size:11px;color:var(--muted);font-weight:800}
+.mode-switch{display:flex;background:#edf3f1;border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px}
+.mode-switch button{
+  border:0;background:transparent;border-radius:9px;padding:8px 10px;font-size:11px;font-weight:900;color:var(--muted)
+}
+.mode-switch button.active{background:white;color:var(--teal);box-shadow:0 3px 10px rgba(29,55,60,.08)}
+.header-actions{display:flex;gap:8px}
+.btn{
+  border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;
+  padding:10px 14px;font-size:13px;font-weight:800
+}
+.btn:hover{border-color:#a7bbb5}
+.btn.primary{background:var(--teal);color:white;border-color:var(--teal)}
+.btn.primary:hover{background:#185e5a}
+.btn.ghost{background:transparent}
+.btn.danger-soft{color:var(--red);background:var(--red-bg);border-color:#f0c6c2}
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:calc(100vh - 102px)}
+.side-nav{
+  position:sticky;top:102px;height:calc(100vh - 102px);overflow:auto;padding:18px 14px 88px;
+  border-right:1px solid var(--line);background:rgba(247,250,249,.84)
+}
+.nav-group-label{font-size:10px;font-weight:900;color:#869690;letter-spacing:.13em;padding:9px 10px 6px}
+.side-nav button{
+  width:100%;display:flex;gap:10px;align-items:center;text-align:left;border:0;background:transparent;
+  border-radius:10px;padding:9px 10px;color:var(--muted);font-size:12px;font-weight:750
+}
+.side-nav button:hover,.side-nav button.active{background:white;color:var(--teal);box-shadow:0 3px 12px rgba(29,55,60,.06)}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:#b7c8c3;flex:0 0 auto}
+.side-nav button.active .nav-dot{background:var(--teal)}
+.workspace{padding:26px clamp(18px,3vw,44px) 100px;max-width:1500px;width:100%;margin:0 auto}
+.panel{
+  scroll-margin-top:122px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(20px,3vw,34px);box-shadow:0 8px 28px rgba(29,55,60,.06);margin-bottom:22px
+}
+.panel-header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}
+.panel-header p{max-width:760px;margin-bottom:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;
+  background:#edf3f1;color:#49635e;font-size:10px;font-weight:900;letter-spacing:.06em
+}
+.badge.teal{background:var(--mint);color:var(--teal)}
+.badge.amber{background:var(--amber-bg);color:var(--amber)}
+.badge.red{background:var(--red-bg);color:var(--red)}
+.badge.green{background:var(--green-bg);color:var(--green)}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.subcard{border:1px solid var(--line);border-radius:15px;padding:18px;background:#fbfcfc}
+.subcard h3,.subcard h4{margin-bottom:8px}
+.subcard p:last-child{margin-bottom:0}
+.evidence-card{position:relative;padding-top:48px}
+.evidence-label{position:absolute;left:16px;top:14px;font-size:10px;font-weight:900;letter-spacing:.09em;color:var(--teal)}
+.opportunity-band{
+  background:linear-gradient(135deg,#17324a,#1d5d61);color:white;border-radius:18px;padding:24px;margin-top:18px;
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:24px
+}
+.opportunity-band p{color:#d9e8e6}
+.opportunity-band .boundary{border-left:1px solid rgba(255,255,255,.22);padding-left:24px}
+.mini-list{margin:0;padding-left:18px;color:var(--muted)}
+.mini-list li{margin:7px 0}
+.capacity-layout{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:18px}
+.control-card{border:1px solid var(--line);border-radius:16px;padding:20px;background:#fbfcfc}
+.segmented{display:flex;gap:8px;flex-wrap:wrap}
+.segmented button{
+  border:1px solid var(--line);background:white;color:var(--muted);border-radius:11px;padding:10px 14px;
+  font-size:12px;font-weight:900
+}
+.segmented button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:white}
+.result-box{margin-top:16px;border-radius:14px;padding:16px;background:#edf5f3;border:1px solid #d3e7e2}
+.result-box.hold{background:var(--red-bg);border-color:#f0c6c2}
+.result-box.available{background:var(--green-bg);border-color:#c7e4d2}
+.matrix{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;vertical-align:top}
+th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#7b8d87}
+tr:last-child td{border-bottom:0}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.dot-green{background:var(--green)}.dot-amber{background:var(--amber)}.dot-red{background:var(--red)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:stretch}
+.flow-step{position:relative;border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfcfc}
+.flow-step:not(:last-child):after{content:"→";position:absolute;right:-10px;top:50%;transform:translate(50%,-50%);color:var(--teal);font-weight:900;z-index:2}
+.flow-step .step-no{font-size:10px;font-weight:900;color:var(--teal);letter-spacing:.1em}
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.field label{display:block;font-size:11px;font-weight:900;color:#5e706a;margin:0 0 6px}
+.field select{
+  width:100%;border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;padding:11px 12px
+}
+.language-copy{padding:18px;border-radius:15px;background:#f0f7f5;border:1px solid #d8eae6;margin-top:16px}
+.inquiry-card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.data-point{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fbfcfc}
+.data-point span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7f908b;font-weight:900;margin-bottom:6px}
+.data-point strong{font-size:13px}
+.boundary-callout{
+  margin-top:16px;border-left:4px solid var(--amber);background:var(--amber-bg);border-radius:10px;padding:14px 16px
+}
+.education-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.education-tabs button{border:1px solid var(--line);background:white;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:850}
+.education-tabs button.active{background:var(--navy);color:white;border-color:var(--navy)}
+.education-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.6fr);gap:18px}
+.question-list{display:grid;gap:9px}
+.question{border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#fbfcfc;font-size:13px}
+.route-card{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fbfcfc}
+.route-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.route-action{min-width:220px}
+.route-status{margin-top:10px;font-size:12px;font-weight:800;color:var(--teal)}
+.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.timeline .subcard{min-height:170px}
+.workflow-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);gap:18px}
+.checklist{display:grid;gap:10px}
+.check-row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.check-icon{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:900}
+.check-icon.ok{background:var(--green-bg);color:var(--green)}
+.check-icon.review{background:var(--amber-bg);color:var(--amber)}
+.check-icon.owner{background:#e8eef5;color:var(--navy)}
+.governance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.metric{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fbfcfc}
+.metric .value{font-size:34px;font-weight:900;letter-spacing:-.04em;color:var(--navy)}
+.metric .label{font-size:12px;font-weight:850;color:var(--muted)}
+.metric .note{font-size:10px;color:#879792;margin-top:8px}
+.dashboard-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:18px}
+.signal-list{display:grid;gap:10px}
+.signal{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.decision-actions{display:flex;gap:9px;flex-wrap:wrap}
+.decision-actions button{
+  border:1px solid var(--line);background:white;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900
+}
+.decision-actions button:hover{border-color:var(--teal);color:var(--teal)}
+.decision-result{margin-top:14px;padding:13px;border-radius:11px;background:#eef5f3;border:1px solid #d8e6e2;font-size:12px;font-weight:800}
+.trace-table code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.try-panel{max-width:1180px;margin:0 auto}
+.try-intro{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:22px}
+.try-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.try-output{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.output-card{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fbfcfc;min-height:130px}
+.output-card span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.09em;font-weight:900;color:#7f908b;margin-bottom:9px}
+.output-card strong{display:block;font-size:15px}
+.output-card p{font-size:12px;margin:8px 0 0}
+.stop-card{border-color:#f0c6c2;background:var(--red-bg)}
+.registration-line{margin-top:12px;font-size:11px;color:var(--teal);font-weight:900}
+.guide-panel{
+  position:fixed;right:22px;bottom:66px;z-index:1600;width:min(430px,calc(100vw - 34px));
+  background:#102a31;color:white;border:1px solid rgba(255,255,255,.18);border-radius:20px;
+  padding:20px;box-shadow:0 28px 70px rgba(0,0,0,.34)
+}
+.guide-panel p{color:#d9e7e5;font-size:13px}
+.guide-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.guide-step{font-size:10px;font-weight:900;letter-spacing:.12em;color:#9fd3cb}
+.guide-panel h3{margin:6px 0 8px;font-size:20px}
+.guide-instruction{border-left:3px solid #6dc1b6;padding-left:12px;margin:13px 0}
+.guide-controls{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:16px}
+.guide-controls .left,.guide-controls .right{display:flex;gap:7px}
+.guide-panel .btn{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);color:white;padding:9px 11px}
+.guide-panel .btn.primary{background:#7bd1c5;color:#0c2728;border-color:#7bd1c5}
+.guide-panel .btn[hidden]{display:none}
+.progress-track{height:5px;background:rgba(255,255,255,.14);border-radius:999px;overflow:hidden;margin-top:14px}
+.progress-track div{height:100%;background:#7bd1c5;width:0}
+.tour-focus{position:relative!important;z-index:1450!important;outline:4px solid #7bd1c5!important;outline-offset:5px!important;box-shadow:0 0 0 9999px rgba(7,21,26,.70)!important}
+.tour-arrow{position:fixed;z-index:1550;color:#7bd1c5;font-size:34px;font-weight:900;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35));pointer-events:none}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:1800;
+  background:#17324a;color:#fff;padding:11px 15px;border-radius:999px;font-size:12px;font-weight:800;
+  opacity:0;pointer-events:none;transition:.2s ease
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.only-try{display:none}
+.app.try-mode .normal-panel,.app.try-mode .side-nav{display:none}
+.app.try-mode .only-try{display:block}
+.app.try-mode .shell{grid-template-columns:1fr}
+.app.try-mode .workspace{max-width:1280px}
+.app.full-mode .only-try,.app.guided-mode .only-try{display:none}
+.app.full-mode .normal-panel,.app.guided-mode .normal-panel{display:block}
+.footer-note{padding-top:8px;color:#71827d;font-size:11px;text-align:center}
+@media (max-width:1100px){
+  .landing-hero{grid-template-columns:1fr}
+  .strategy-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mode-grid{grid-template-columns:1fr}
+  .mode-card{min-height:0}
+  .app-header{grid-template-columns:1fr auto}
+  .mode-switch{grid-column:1/-1;order:3;overflow:auto}
+  .shell{grid-template-columns:210px minmax(0,1fr)}
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .capacity-layout,.opportunity-band,.education-body,.workflow-board,.dashboard-layout{grid-template-columns:1fr}
+  .opportunity-band .boundary{border-left:0;border-top:1px solid rgba(255,255,255,.22);padding-left:0;padding-top:18px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-step:nth-child(2):after{display:none}
+  .inquiry-card{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .landing{padding:42px 16px 76px}
+  .strategy-strip{grid-template-columns:1fr}
+  .mode-heading{display:block}
+  .app-header{top:32px;padding:11px 12px;grid-template-columns:1fr auto}
+  .app-title-text span{display:none}
+  .header-actions .btn{padding:8px 10px;font-size:11px}
+  .mode-switch{width:100%}
+  .mode-switch button{flex:1;min-width:112px}
+  .shell{display:block}
+  .side-nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);display:flex!important;overflow:auto;padding:8px 12px;background:#f7faf9}
+  .app.try-mode .side-nav{display:none!important}
+  .nav-group-label{display:none}
+  .side-nav button{width:auto;white-space:nowrap;flex:0 0 auto}
+  .workspace{padding:16px 12px 112px}
+  .panel{padding:18px;border-radius:15px}
+  .panel-header,.try-intro{display:block}
+  .grid-2,.grid-3,.grid-4,.form-grid,.try-controls,.try-output,.governance-grid{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr}
+  .flow-step:after{display:none!important}
+  .inquiry-card,.route-summary,.timeline{grid-template-columns:1fr}
+  .route-card{grid-template-columns:1fr}
+  .route-action{min-width:0}
+  .guide-panel{left:10px;right:10px;bottom:58px;width:auto;max-height:46vh;overflow:auto;padding:16px}
+  .guide-panel h3{font-size:17px}
+  .guide-panel p{font-size:12px}
+  .demo-pill{right:10px;bottom:10px;font-size:9px;padding:7px 10px}
+  .tour-arrow{display:none!important}
+  .hero-note{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="confidential-bar">CONFIDENTIAL — INTERNAL PARTNER REVIEW — NOT CLIENT APPROVED</div>
+<div class="demo-pill">DEMONSTRATION — NO LIVE ACTIONS</div>
+
+<main id="landing" class="landing">
+  <div class="landing-hero">
+    <div>
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div><div class="brand-title">NETIERS</div><div class="small muted">Demonstration Studio · Value-First v2</div></div>
+      </div>
+      <div class="kicker">Elkhart Dental and Implant Center</div>
+      <h1>Growth architecture built around strengths, capacity and human control.</h1>
+      <p style="max-width:790px;font-size:18px">A private, synthetic partner-review experience showing how Netiers could help coordinate qualified demand, bilingual administrative access, service education, relationship continuity, reputation, digital reliability and governance as one paced system.</p>
+    </div>
+    <aside class="hero-note" aria-label="Case status">
+      <div class="status-line"><span class="small muted">Case</span><strong class="small">NETIERS-COMPANY-002-ELKHART-DENTAL</strong></div>
+      <div class="status-line"><span class="small muted">Audience</span><strong class="small">INTERNAL_PARTNER_REVIEW</strong></div>
+      <div class="status-line"><span class="small muted">Status</span><strong class="small">PARTNER_REVIEW</strong></div>
+      <div class="status-line"><span class="small muted">Prototype</span><strong class="small">PRIVATE · LOCAL · SYNTHETIC</strong></div>
+      <div class="status-line"><span class="small muted">Financial module</span><strong class="small">NOT_INCLUDED</strong></div>
+    </aside>
+  </div>
+
+  <section class="strategy-strip" aria-label="Strategic opening">
+    <article class="story-card"><div class="num">01</div><h3>Strengths to preserve</h3><p>Longevity, broad services, strong user-described leadership and staff, patient relationships, facility capabilities and bilingual front-office access.</p></article>
+    <article class="story-card"><div class="num">02</div><h3>Opportunity identified</h3><p>Validate capacity and owner priorities, then pace qualified demand and relationship growth to safe operating limits.</p></article>
+    <article class="story-card"><div class="num">03</div><h3>Why it appears credible</h3><p>The approved portfolio connects the controlling objective to verified or observed practice strengths without diagnosing a management failure.</p></article>
+    <article class="story-card"><div class="num">04</div><h3>What Netiers could help build</h3><p>A connected growth operating system spanning acquisition, access, consultation support, continuity, reputation, reliability and governance.</p></article>
+    <article class="story-card"><div class="num">05</div><h3>What you will see</h3><p>A guided walkthrough, a controlled hands-on scenario and the full operator/management interface.</p></article>
+    <article class="story-card"><div class="num">06</div><h3>What requires validation</h3><p>Owner priorities, measured capacity, service availability, workload, clinical content, language coverage, systems and every live action.</p></article>
+  </section>
+
+  <div class="mode-heading">
+    <div><div class="kicker">Choose an experience</div><h2 style="margin-bottom:0">Three ways to review the same working system</h2></div>
+    <p class="small">All data, schedules, counts and actions are synthetic.</p>
+  </div>
+  <section class="mode-grid" aria-label="Experience modes">
+    <button class="mode-card" data-enter-mode="guided">
+      <div class="icon">▶</div><h3>SHOW ME HOW IT WORKS</h3>
+      <p>Take a viewer-paced, 12-stage guided walkthrough using the actual interface and highlighted controls.</p>
+      <div class="launch">BEGIN GUIDED WALKTHROUGH →</div>
+    </button>
+    <button class="mode-card" data-enter-mode="try">
+      <div class="icon">↔</div><h3>LET ME TRY IT</h3>
+      <p>Change service, language, source, capacity, relationship and consent states to see visible cause and effect.</p>
+      <div class="launch">OPEN CONTROLLED SCENARIO →</div>
+    </button>
+    <button class="mode-card" data-enter-mode="full">
+      <div class="icon">▦</div><h3>EXPLORE THE FULL SYSTEM</h3>
+      <p>Review the complete operator and management interface without the guided overlay.</p>
+      <div class="launch">OPEN COMPLETE INTERFACE →</div>
+    </button>
+  </section>
+</main>
+
+<div id="app" class="app hidden">
+  <header class="app-header">
+    <div class="app-title">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div class="app-title-text"><strong>Elkhart Dental · Value-First Growth System</strong><span>Partner review · synthetic demonstration</span></div>
+    </div>
+    <div class="mode-switch" aria-label="Switch experience mode">
+      <button data-switch-mode="guided">SHOW ME HOW IT WORKS</button>
+      <button data-switch-mode="try">LET ME TRY IT</button>
+      <button data-switch-mode="full">EXPLORE THE FULL SYSTEM</button>
+    </div>
+    <div class="header-actions">
+      <button id="resetAll" class="btn">Reset</button>
+      <button id="exitApp" class="btn ghost">Exit</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav id="sideNav" class="side-nav" aria-label="Full system navigation">
+      <div class="nav-group-label">STRATEGY</div>
+      <button data-section="overview"><span class="nav-dot"></span>Strategic overview</button>
+      <button data-section="capacity"><span class="nav-dot"></span>Capacity and pacing</button>
+      <div class="nav-group-label">GROWTH JOURNEYS</div>
+      <button data-section="discovery"><span class="nav-dot"></span>Discovery entry</button>
+      <button data-section="bilingual"><span class="nav-dot"></span>Bilingual access</button>
+      <button data-section="inquiry"><span class="nav-dot"></span>Inquiry workspace</button>
+      <button data-section="education"><span class="nav-dot"></span>Service education</button>
+      <button data-section="routing"><span class="nav-dot"></span>Human routing</button>
+      <button data-section="continuity"><span class="nav-dot"></span>Continuity and recovery</button>
+      <button data-section="reputation"><span class="nav-dot"></span>Referral and reputation</button>
+      <div class="nav-group-label">CONTROL</div>
+      <button data-section="reliability"><span class="nav-dot"></span>Digital reliability</button>
+      <button data-section="governance"><span class="nav-dot"></span>Privacy and governance</button>
+      <button data-section="dashboard"><span class="nav-dot"></span>Management dashboard</button>
+      <button data-section="decisions"><span class="nav-dot"></span>Decision register</button>
+      <button data-section="traceability"><span class="nav-dot"></span>Traceability</button>
+    </nav>
+
+    <main id="workspace" class="workspace">
+      <section id="tryPanel" class="panel only-try try-panel" aria-labelledby="tryTitle">
+        <div class="try-intro">
+          <div><div class="kicker">Controlled hands-on scenario</div><h2 id="tryTitle">Change the inputs. Watch the safe operating response change.</h2><p>Use realistic synthetic values. Every interaction stays local, creates no record and sends nothing.</p></div>
+          <div class="badges"><span class="badge teal">SAMPLE — NOT LIVE</span><span class="badge">NO PATIENT DATA</span></div>
+        </div>
+        <div class="try-controls">
+          <div class="field"><label for="tryService">Service interest</label><select id="tryService"><option value="implants">Implant consultation interest</option><option value="dentures">Denture consultation interest</option><option value="restorative">Restorative care interest</option><option value="cosmetic">Cosmetic dentistry interest</option><option value="orthodontics">Orthodontic consultation interest</option><option value="preventive">Preventive visit interest</option></select></div>
+          <div class="field"><label for="tryLanguage">Administrative preference</label><select id="tryLanguage"><option value="english">English</option><option value="spanish">Spanish</option></select></div>
+          <div class="field"><label for="trySource">Inquiry source</label><select id="trySource"><option value="education">Educational entry concept</option><option value="referral">Patient referral</option><option value="organic">Organic website visit</option><option value="community">Community relationship concept</option><option value="reactivation">Relationship continuity queue</option></select></div>
+          <div class="field"><label for="tryCapacity">Illustrative capacity</label><select id="tryCapacity"><option value="available">AVAILABLE</option><option value="limited" selected>LIMITED</option><option value="hold">HOLD</option></select></div>
+          <div class="field"><label for="tryRelationship">Follow-up / relationship state</label><select id="tryRelationship"><option value="new">New inquiry</option><option value="recare">Recare review</option><option value="inactive">Inactive-patient review</option><option value="cancellation">Cancellation recovery</option><option value="opening">Open-chair request</option></select></div>
+          <div class="field"><label for="tryConsent">Communication eligibility</label><select id="tryConsent"><option value="eligible">Eligible — synthetic</option><option value="confirm">Confirmation required</option><option value="suppressed">Suppressed / do not contact</option></select></div>
+        </div>
+        <div id="registrationLine" class="registration-line">Ready for first interaction.</div>
+        <div class="try-output">
+          <article class="output-card"><span>Nonclinical interpretation</span><strong id="outInterpretation"></strong><p id="outInterpretationNote"></p></article>
+          <article class="output-card"><span>Recommended human owner</span><strong id="outOwner"></strong><p id="outOwnerNote"></p></article>
+          <article class="output-card"><span>Safe next action</span><strong id="outAction"></strong><p>Administrative recommendation only. No appointment, estimate or treatment decision is completed.</p></article>
+          <article class="output-card"><span>Required approval</span><strong id="outApproval"></strong><p>Authorized humans may revise, pause or stop.</p></article>
+          <article class="output-card"><span>Management summary</span><strong id="outSummary"></strong><p id="outSummaryNote"></p></article>
+          <article id="outWarningCard" class="output-card"><span>Warnings / stop conditions</span><strong id="outWarning"></strong><p id="outWarningNote"></p></article>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+          <button id="resetScenario" class="btn">Reset scenario</button>
+          <button id="openFullFromTry" class="btn primary">Explore the full system</button>
+        </div>
+      </section>
+
+      <section id="overview" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-01 · Strengths and opportunity context</div><h2>Start with what is already strong.</h2><p>Netiers is not proposing to repair a presumed poorly managed practice. The portfolio begins with the practice’s operating history, publicly presented breadth and capabilities, and user-described leadership and staff quality.</p></div>
+          <div class="badges"><span class="badge amber">PARTNER REVIEW — NOT CLIENT APPROVED</span><span class="badge">PROPOSED DEMONSTRATION</span></div>
+        </div>
+        <div class="grid-4">
+          <article class="subcard evidence-card"><div class="evidence-label">VERIFIED FACT · S01</div><h3>Long-established entity</h3><p>ELKHART DENTAL CENTER, PC is an active Indiana professional corporation formed in 1992.</p></article>
+          <article class="subcard evidence-card"><div class="evidence-label">VERIFIED OBSERVATION · S02–S05</div><h3>Broad public service story</h3><p>The official site presents a broad family, preventive, restorative, implant, denture, cosmetic, orthodontic and related service offering.</p></article>
+          <article class="subcard evidence-card"><div class="evidence-label">VERIFIED OBSERVATION · S03</div><h3>Facility and access assets</h3><p>The site states the practice moved to a newly constructed office in 2022 and identifies multiple bilingual front-office roles.</p></article>
+          <article class="subcard evidence-card"><div class="evidence-label">USER-SUPPLIED CONTEXT</div><h3>Leadership and team quality</h3><p>Dr. Sangyoung Lee is described as personable, with excellent staff, professional management and exceptional office-management capability.</p></article>
+        </div>
+        <div class="opportunity-band">
+          <div><div class="kicker" style="color:#9fd3cb">OPPORTUNITY IDENTIFIED · OTP-001</div><h3 style="font-size:27px">Validate capacity. Choose priorities. Pace qualified growth safely.</h3><p>Connect acquisition, bilingual access, consultation support, relationship continuity, authentic reputation, digital reliability and governance as one human-owned system.</p></div>
+          <div class="boundary"><div class="small" style="font-weight:900;letter-spacing:.08em">UNKNOWN / OWNER VALIDATION REQUIRED</div><ul class="mini-list" style="color:#d9e8e6"><li>Measured capacity and safe workload thresholds</li><li>Authorized owner priorities and decision rights</li><li>Current service availability and approved claims</li><li>Systems, consent, privacy and security controls</li></ul></div>
+        </div>
+      </section>
+
+      <section id="capacity" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-02 · Capacity and growth boundary</div><h2>Demand follows a verified operating envelope.</h2><p>This interface uses illustrative states only. It does not claim actual utilization, available appointments or clinical capacity.</p></div>
+          <div class="badges"><span class="badge teal">OTP-001</span><span class="badge teal">OTP-008</span><span class="badge amber">OWNER VALIDATION REQUIRED</span></div>
+        </div>
+        <div class="capacity-layout">
+          <div id="capacityControls" class="control-card">
+            <h3>Illustrative pacing state</h3>
+            <p class="small">Choose any state. Selecting the displayed state still registers.</p>
+            <div class="segmented" role="group" aria-label="Illustrative capacity state">
+              <button data-capacity-state="available" aria-pressed="false">AVAILABLE</button>
+              <button data-capacity-state="limited" aria-pressed="true">LIMITED</button>
+              <button data-capacity-state="hold" aria-pressed="false">HOLD</button>
+            </div>
+            <div id="capacityResult" class="result-box">
+              <strong id="capacityHeadline">LIMITED — pace activity to staff review</strong>
+              <p id="capacityCopy" class="small" style="margin:8px 0 0">Capture interest, preserve expectations and require staff confirmation before offering any administrative next step.</p>
+            </div>
+            <div class="small muted" style="margin-top:12px">Workload protection: authorized leadership defines thresholds and may pause or stop activity.</div>
+          </div>
+          <div class="matrix">
+            <table aria-label="Illustrative capacity by service and daypart">
+              <thead><tr><th>Illustrative service area</th><th>Morning</th><th>Afternoon</th><th>Decision owner</th></tr></thead>
+              <tbody>
+                <tr><td>Higher-consideration consultations</td><td><span class="status-dot dot-amber"></span>LIMITED</td><td><span class="status-dot dot-green"></span>AVAILABLE</td><td>Office manager + clinical lead</td></tr>
+                <tr><td>Preventive access</td><td><span class="status-dot dot-red"></span>HOLD</td><td><span class="status-dot dot-amber"></span>LIMITED</td><td>Hygiene / scheduling leadership</td></tr>
+                <tr><td>Relationship recovery</td><td><span class="status-dot dot-green"></span>AVAILABLE</td><td><span class="status-dot dot-amber"></span>LIMITED</td><td>Authorized front-office owner</td></tr>
+              </tbody>
+            </table>
+            <p class="small muted" style="margin-top:10px">SAMPLE — NOT LIVE. Values show the control logic Ron and Hugh are reviewing, not practice performance.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="discovery" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-03 · Qualified patient discovery</div><h2>A clear educational entry point, not a clinical conclusion.</h2><p>A synthetic entry concept captures source, service interest, language preference and an administrative next step while avoiding diagnosis, candidacy and availability claims.</p></div>
+          <div class="badges"><span class="badge teal">OTP-001</span><span class="badge teal">OTP-003</span><span class="badge">SAMPLE — NOT LIVE</span></div>
+        </div>
+        <div class="flow">
+          <article class="flow-step"><div class="step-no">SOURCE</div><h3>Educational entry concept</h3><p class="small">Owner-approved content or community source, not a live campaign.</p></article>
+          <article class="flow-step"><div class="step-no">INTEREST</div><h3>Implant consultation interest</h3><p class="small">Administrative category only; no treatment recommendation.</p></article>
+          <article class="flow-step"><div class="step-no">PREFERENCE</div><h3>English or Spanish</h3><p class="small">Administrative language choice with human escalation.</p></article>
+          <article class="flow-step"><div class="step-no">NEXT STEP</div><h3>Request staff review</h3><p class="small">PENDING REQUEST. Staff confirms scope and access.</p></article>
+        </div>
+        <div class="boundary-callout"><strong>Boundary:</strong> this entry point may organize questions and interest. It never decides urgency, diagnosis, candidacy, treatment, insurance coverage or clinical availability.</div>
+      </section>
+
+      <section id="bilingual" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-04 · Bilingual administrative entry</div><h2>Administrative access in English or Spanish, with explicit escalation.</h2><p>Publicly visible bilingual front-office roles create a credible access opportunity. Exact coverage, written-language review and clinical interpretation arrangements remain unknown.</p></div>
+          <div class="badges"><span class="badge teal">OTP-002</span><span class="badge teal">OTP-008</span><span class="badge amber">STAFF CONFIRMATION REQUIRED</span></div>
+        </div>
+        <div id="languageControls" class="segmented" role="group" aria-label="Administrative language preference">
+          <button data-language="english" aria-pressed="true">English</button>
+          <button data-language="spanish" aria-pressed="false">Español</button>
+        </div>
+        <div id="languageCopy" class="language-copy">
+          <strong>English administrative preference selected</strong>
+          <p class="small" style="margin:7px 0 0">We can organize your service interest and request contact from authorized staff. For symptoms, urgent concerns or treatment questions, licensed or authorized staff must respond.</p>
+        </div>
+        <div class="small muted" style="margin-top:12px">Administrative language access is not a promise of clinical interpretation. Qualified language review and escalation rules are required.</div>
+      </section>
+
+      <section id="inquiry" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-05 · Inquiry interpretation and ownership</div><h2>A synthetic inquiry becomes an owned administrative case.</h2><p>The interface classifies nonclinical intent and exposes the human owner, due time and escalation boundary.</p></div>
+          <div class="badges"><span class="badge">SYNTHETIC INQUIRY ED-1042</span><span class="badge amber">NOT SENT</span></div>
+        </div>
+        <div class="inquiry-card">
+          <div class="data-point"><span>Source</span><strong>Educational entry concept</strong></div>
+          <div class="data-point"><span>Nonclinical intent</span><strong>Consultation information request</strong></div>
+          <div class="data-point"><span>Service interest</span><strong>Implants</strong></div>
+          <div class="data-point"><span>Language preference</span><strong>Spanish administrative path</strong></div>
+          <div class="data-point"><span>Human owner</span><strong>Bilingual front-office lead</strong></div>
+          <div class="data-point"><span>Priority</span><strong>Administrative review</strong></div>
+          <div class="data-point"><span>Illustrative due time</span><strong>By 10:30 local sample</strong></div>
+          <div class="data-point"><span>Escalation boundary</span><strong>Any symptom or urgency statement → licensed staff</strong></div>
+        </div>
+        <div class="boundary-callout"><strong>No clinical interpretation:</strong> the demonstration does not interpret symptoms, determine urgency, recommend treatment, determine candidacy or complete an insurance decision.</div>
+      </section>
+
+      <section id="education" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-06 · Service education and consultation path</div><h2>Clinically reviewable education supports a human consultation journey.</h2><p>Choose a higher-consideration example. Content remains placeholder material until authorized clinical review confirms accuracy, exclusions and current availability.</p></div>
+          <div class="badges"><span class="badge teal">OTP-003</span><span class="badge amber">CLINICAL REVIEW REQUIRED</span></div>
+        </div>
+        <div class="education-tabs" role="tablist" aria-label="Service education examples">
+          <button data-education="implants" class="active">Implants</button>
+          <button data-education="dentures">Dentures</button>
+          <button data-education="restorative">Restorative care</button>
+          <button data-education="orthodontics">Orthodontics</button>
+        </div>
+        <div class="education-body">
+          <div id="educationContent" class="subcard">
+            <div class="kicker">PLACEHOLDER EDUCATION · IMPLANTS</div>
+            <h3>What an initial consultation may help clarify</h3>
+            <p>Goals, relevant history, questions about the process and what information an authorized clinician may need before discussing options.</p>
+            <div class="question-list">
+              <div class="question">What would you like to understand before requesting a consultation?</div>
+              <div class="question">Do you prefer an English or Spanish administrative follow-up?</div>
+              <div class="question">Would you like staff to contact you about consultation availability?</div>
+            </div>
+          </div>
+          <aside class="subcard">
+            <div class="kicker">CONSULTATION STATUS</div>
+            <h3>PENDING REQUEST</h3>
+            <ul class="mini-list"><li>Administrative interest captured</li><li>Capacity check required</li><li>Clinical content approval required</li><li>Staff confirms any next step</li></ul>
+            <div class="badge amber" style="margin-top:12px">CLINICAL REVIEW REQUIRED</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="routing" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-07 · Capacity-aware human routing</div><h2>Prepare a safe staff review, never a completed appointment.</h2><p>The proposed route changes with the illustrative capacity state. Authorized staff approve, revise or stop every next step.</p></div>
+          <div class="badges"><span class="badge teal">OTP-001 · OTP-002 · OTP-003 · OTP-008</span><span class="badge amber">STAFF CONFIRMATION REQUIRED</span></div>
+        </div>
+        <div class="route-card">
+          <div>
+            <h3 id="routeHeadline">Limited capacity: preserve interest and request pacing review.</h3>
+            <div class="route-summary">
+              <div class="data-point"><span>Suggested owner</span><strong id="routeOwner">Office manager + consultation coordinator</strong></div>
+              <div class="data-point"><span>Safe next step</span><strong id="routeNext">Prepare nonclinical request for staff review</strong></div>
+              <div class="data-point"><span>Approval</span><strong id="routeApproval">Capacity and staff confirmation</strong></div>
+            </div>
+          </div>
+          <div class="route-action">
+            <button id="prepareRoute" class="btn primary" style="width:100%">Prepare staff review</button>
+            <div id="routeStatus" class="route-status">No action prepared.</div>
+          </div>
+        </div>
+        <p class="small muted" style="margin:12px 0 0">Local demonstration only. No appointment, calendar event, estimate, insurance decision, message or practice-system record is created.</p>
+      </section>
+
+      <section id="continuity" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-08 · Relationship continuity and recovery</div><h2>Eligibility, consent and capacity come before communication.</h2><p>Synthetic relationship states show how recare, inactive-patient review, cancellation recovery and open-chair opportunities could be governed.</p></div>
+          <div class="badges"><span class="badge teal">OTP-004</span><span class="badge teal">OTP-008</span><span class="badge amber">NOT SENT</span></div>
+        </div>
+        <div class="matrix">
+          <table aria-label="Synthetic relationship continuity states">
+            <thead><tr><th>State</th><th>Synthetic count</th><th>Eligibility</th><th>Consent / suppression</th><th>Capacity fit</th><th>Required action</th></tr></thead>
+            <tbody>
+              <tr><td>Recare review</td><td>6</td><td>Staff review required</td><td>Confirm current preference</td><td>LIMITED</td><td>Hold for authorized list review</td></tr>
+              <tr><td>Cancellation recovery</td><td>4</td><td>Eligible after staff check</td><td>Eligible — synthetic</td><td>AVAILABLE</td><td>Prepare unsent contact draft</td></tr>
+              <tr><td>Inactive-patient review</td><td>3</td><td>Policy and record review</td><td>One suppressed</td><td>HOLD</td><td>No communication</td></tr>
+              <tr><td>Open-chair request</td><td>2</td><td>Staff-defined pool only</td><td>Confirm before use</td><td>AVAILABLE</td><td>Staff selects and approves</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="boundary-callout"><strong>Human control:</strong> authorized staff determine eligibility, confirm current consent and suppression, select recipients, protect household privacy and approve every communication.</div>
+      </section>
+
+      <section id="reputation" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-09 · Referral and reputation support</div><h2>Authentic proof without fabricated reviews, gating or incentives.</h2><p>The workflow supports appropriate timing, source capture and human-reviewed response drafting while preserving patient privacy and platform rules.</p></div>
+          <div class="badges"><span class="badge teal">OTP-005</span><span class="badge teal">OTP-008</span><span class="badge amber">PUBLIC APPROVAL REQUIRED</span></div>
+        </div>
+        <div class="timeline">
+          <article class="subcard"><div class="kicker">01 · ELIGIBILITY</div><h3>Staff confirms an appropriate moment</h3><p class="small">No selective suppression based on sentiment. No private health details.</p></article>
+          <article class="subcard"><div class="kicker">02 · REQUEST</div><h3>Use an approved, non-incentivized request</h3><p class="small">NOT SENT. Timing, channel and language require approval.</p></article>
+          <article class="subcard"><div class="kicker">03 · SOURCE</div><h3>Capture authentic referral origin</h3><p class="small">No manufactured familiarity or purchased endorsement.</p></article>
+          <article class="subcard"><div class="kicker">04 · RESPONSE</div><h3>Draft privately, approve before posting</h3><p class="small">No public response occurs inside the demonstration.</p></article>
+        </div>
+      </section>
+
+      <section id="reliability" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-10 · Digital journey reliability</div><h2>A canonical access checklist protects every growth journey.</h2><p>Review identity, phone, hours, portal, forms and profile ownership before activation. The prior patient-login observation is time-stamped and must be retested.</p></div>
+          <div class="badges"><span class="badge teal">OTP-007</span><span class="badge teal">OTP-008</span><span class="badge">NO LIVE CORRECTIONS</span></div>
+        </div>
+        <div class="workflow-board">
+          <div class="checklist">
+            <div class="check-row"><div class="check-icon ok">✓</div><div><strong>Public-facing name</strong><div class="small muted">Elkhart Dental and Implant Center</div></div><span class="badge green">SOURCE CONFIRMED</span></div>
+            <div class="check-row"><div class="check-icon ok">✓</div><div><strong>Public address and phone</strong><div class="small muted">145 S Nappanee St, Suite 1 · (574) 522-0156</div></div><span class="badge green">SOURCE CONFIRMED</span></div>
+            <div class="check-row"><div class="check-icon review">!</div><div><strong>Hours across public listings</strong><div class="small muted">Canonical source and listing consistency require owner review.</div></div><span class="badge amber">RETEST</span></div>
+            <div class="check-row"><div class="check-icon review">!</div><div><strong>Patient login pathway</strong><div class="small muted">Observed 2026-06-27: requested page could not be found. Retest required; not treated as a guaranteed current defect.</div></div><span class="badge amber">RETEST</span></div>
+            <div class="check-row"><div class="check-icon owner">↗</div><div><strong>Forms and profile ownership</strong><div class="small muted">Routing, retention, credentials and asset owners remain unknown.</div></div><span class="badge">OWNER VALIDATION</span></div>
+          </div>
+          <aside class="subcard">
+            <div class="kicker">CANONICAL CONTROL RECORD</div><h3>One owner-approved source of truth</h3>
+            <ul class="mini-list"><li>Legal entity vs. public brand</li><li>Address, phone and office hours</li><li>Portal and forms destinations</li><li>Profile ownership and credentials</li><li>Approval date and responsible owner</li></ul>
+            <div class="boundary-callout" style="margin-top:16px">No website, listing, portal, form or profile is changed in this demonstration.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="governance" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">Cross-system control · OTP-008</div><h2>Growth is enabled by explicit human approvals.</h2><p>Privacy, consent, security, language, clinical, advertising and workload controls are part of the operating design—not an afterthought.</p></div>
+          <div class="badges"><span class="badge red">NO LIVE ACTIONS</span><span class="badge amber">OWNER VALIDATION REQUIRED</span></div>
+        </div>
+        <div class="governance-grid">
+          <article class="subcard"><h3>Clinical boundary</h3><p class="small">Licensed or authorized staff retain symptoms, urgency, diagnosis, candidacy, treatment, informed consent and clinical records.</p><span class="badge amber">CLINICAL REVIEW REQUIRED</span></article>
+          <article class="subcard"><h3>Privacy and security</h3><p class="small">Minimum necessary data, approved vendors, role-based access, logging, retention and incident controls require authorization.</p><span class="badge">PRIVACY / SECURITY APPROVAL</span></article>
+          <article class="subcard"><h3>Communication control</h3><p class="small">Current consent, preference, opt-out and suppression states govern every proposed communication.</p><span class="badge amber">STAFF CONFIRMATION REQUIRED</span></article>
+          <article class="subcard"><h3>Language access</h3><p class="small">Administrative language access remains distinct from clinical interpretation and requires qualified review.</p><span class="badge">LANGUAGE REVIEW</span></article>
+          <article class="subcard"><h3>Advertising and reputation</h3><p class="small">Truthful claims, platform rules, patient privacy and human approval govern public materials and responses.</p><span class="badge">PUBLIC APPROVAL</span></article>
+          <article class="subcard"><h3>Capacity and workload</h3><p class="small">Authorized leadership defines pace, patient-experience safeguards and pause/stop thresholds.</p><span class="badge red">PAUSE / STOP AUTHORITY</span></article>
+        </div>
+      </section>
+
+      <section id="dashboard" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-11 · Management view and decision gate</div><h2>Management sees the system, safeguards and unresolved decisions.</h2><p>All figures below are illustrative. They are not current practice performance, targets or forecasts.</p></div>
+          <div class="badges"><span class="badge teal">SYNTHETIC DASHBOARD</span><span class="badge">NONFINANCIAL</span></div>
+        </div>
+        <div class="grid-4">
+          <div class="metric"><div class="value">12</div><div class="label">Qualified administrative inquiries</div><div class="note">Illustrative source + service criteria</div></div>
+          <div class="metric"><div class="value">4</div><div class="label">Consultation interests pending staff review</div><div class="note">No appointment implied</div></div>
+          <div class="metric"><div class="value">3</div><div class="label">Relationship states ready for eligibility review</div><div class="note">Consent still governs</div></div>
+          <div class="metric"><div class="value">2</div><div class="label">Workload or governance holds</div><div class="note">Pause before action</div></div>
+        </div>
+        <div class="dashboard-layout" style="margin-top:18px">
+          <div class="subcard">
+            <h3>Illustrative management summary</h3>
+            <div id="dashboardScenarioSummary" class="signal"><span>Hands-on scenario</span><strong>Implants · English · LIMITED · eligible</strong></div>
+            <div class="signal-list" style="margin-top:10px">
+              <div class="signal"><span>Consent / suppression exceptions</span><strong>1 synthetic hold</strong></div>
+              <div class="signal"><span>Clinical escalations</span><strong>0 interpreted · 2 pending human review</strong></div>
+              <div class="signal"><span>Digital reliability</span><strong>2 retest items</strong></div>
+              <div class="signal"><span>Owner-validation needs</span><strong>8 open categories</strong></div>
+            </div>
+          </div>
+          <aside class="subcard">
+            <h3>Decision gate</h3>
+            <div class="signal-list">
+              <div class="signal"><span>Capacity state</span><strong id="dashCapacity">LIMITED</strong></div>
+              <div class="signal"><span>Workload protection</span><strong>Active</strong></div>
+              <div class="signal"><span>Live action authority</span><strong>None</strong></div>
+              <div class="signal"><span>Prospect presentation</span><strong>Not approved</strong></div>
+            </div>
+            <p class="small muted" style="margin-top:12px">Leadership choices: ADVANCE, REVISE, PAUSE or STOP.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="decisions" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">D-12 · Final partner review</div><h2>What should Ron and Hugh approve, revise or reject?</h2><p>The package shows what Netiers could help build. It does not authorize a prospect presentation, implementation or external action.</p></div>
+          <div class="badges"><span class="badge amber">PARTNER REVIEW — NOT CLIENT APPROVED</span></div>
+        </div>
+        <div class="grid-3">
+          <article class="subcard"><h3>Approve or revise now</h3><ul class="mini-list"><li>Connected growth-system story</li><li>Selected OTP scope</li><li>Guided and hands-on experience</li><li>Language and clinical boundaries</li><li>Prospect-safety wording</li></ul></article>
+          <article class="subcard"><h3>Practice leadership must validate</h3><ul class="mini-list"><li>Capacity and workload thresholds</li><li>Priority services and audiences</li><li>Service availability and clinical content</li><li>Language coverage and interpretation</li><li>Systems, consent, privacy and security</li></ul></article>
+          <article class="subcard"><h3>Not included or authorized</h3><ul class="mini-list"><li>Client presentation or endorsement</li><li>Live implementation or outreach</li><li>Real patient data or system connection</li><li>Financial model or pricing proposal</li><li>Appointment, insurance or treatment decisions</li></ul></article>
+        </div>
+        <div class="subcard" style="margin-top:16px">
+          <h3>Record a local partner-review disposition</h3>
+          <div class="decision-actions" role="group" aria-label="Partner review disposition">
+            <button data-decision="ADVANCE">ADVANCE</button><button data-decision="REVISE">REVISE</button><button data-decision="PAUSE">PAUSE</button><button data-decision="STOP">STOP</button>
+          </div>
+          <div id="decisionResult" class="decision-result">No local disposition selected. Nothing is submitted or saved outside this file.</div>
+        </div>
+      </section>
+
+      <section id="traceability" class="panel normal-panel">
+        <div class="panel-header">
+          <div><div class="kicker">Source and opportunity traceability</div><h2>Exact case lineage is preserved.</h2><p>The demonstration uses only the four controlling company records authorized for this build.</p></div>
+          <div class="badges"><span class="badge">CASE LOCKED</span><span class="badge teal">7 APPROVED OTP IDs</span></div>
+        </div>
+        <div class="matrix trace-table">
+          <table aria-label="Controlling records">
+            <thead><tr><th>Controlling record</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td>Elkhart Dental BI Dossier - Value-First v4.docx</td><td>Business Intelligence · human-readable</td></tr>
+              <tr><td>Elkhart Dental BI Data - Value-First v4.json</td><td>Business Intelligence · machine-readable</td></tr>
+              <tr><td>Elkhart Dental Opportunity Portfolio v1.docx</td><td>Opportunity & Transformation · human-readable</td></tr>
+              <tr><td>Elkhart Dental Opportunity Data v1.json</td><td>Opportunity & Transformation · machine-readable</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="subcard"><h3>Case and schema</h3><p class="small"><code>NETIERS-COMPANY-002-ELKHART-DENTAL</code></p><p class="small"><code>netiers.business_intelligence_transformation.v3</code><br><code>netiers.opportunity_transformation.v1</code><br><code>netiers.demonstration_package.v2</code></p></div>
+          <div class="subcard"><h3>Conditionally selected opportunities</h3><div class="badges"><span class="badge teal">OTP-001</span><span class="badge teal">OTP-002</span><span class="badge teal">OTP-003</span><span class="badge teal">OTP-004</span><span class="badge teal">OTP-005</span><span class="badge teal">OTP-007</span><span class="badge teal">OTP-008</span></div><p class="small muted" style="margin-top:12px">Handoff: <code>handoff_to_DEMONSTRATION_STUDIO</code> · CONDITIONAL</p></div>
+        </div>
+        <div class="footer-note">EDDemo_v1 · INTERNAL_PARTNER_REVIEW · PARTNER_REVIEW · Financial module NOT_INCLUDED</div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<aside id="guidePanel" class="guide-panel hidden" aria-live="polite">
+  <div class="guide-top">
+    <div><div id="guideStep" class="guide-step">D-01 · 1 OF 12</div><h3 id="guideTitle">Strengths and Opportunity Context</h3></div>
+    <span class="badge" style="background:rgba(255,255,255,.12);color:white">VIEWER-PACED</span>
+  </div>
+  <p id="guideText"></p>
+  <div id="guideInstruction" class="guide-instruction"></div>
+  <div class="progress-track" aria-hidden="true"><div id="guideProgress"></div></div>
+  <div class="guide-controls">
+    <div class="left"><button id="guideRestart" class="btn">Restart</button><button id="guideExit" class="btn">Exit</button></div>
+    <div class="right"><button id="guideBack" class="btn">Back</button><button id="guideNext" class="btn primary">Next</button></div>
+  </div>
+</aside>
+<div id="tourArrow" class="tour-arrow hidden" aria-hidden="true">↓</div>
+<div id="toast" class="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (sel,ctx=document)=>ctx.querySelector(sel);
+  const $$ = (sel,ctx=document)=>Array.from(ctx.querySelectorAll(sel));
+  const landing=$("#landing"), app=$("#app"), guidePanel=$("#guidePanel"), tourArrow=$("#tourArrow"), toast=$("#toast");
+  let currentMode="landing", currentCapacity="limited", currentLanguage="english", currentEducation="implants";
+  let tourIndex=0, routePrepared=false, registrationCount=0, tourFocusTimer=null;
+  const completedActions={capacity:false,route:false};
+
+  const tourSteps=[
+    {id:"D-01",title:"Strengths and Opportunity Context",target:"#overview",text:"Begin with the practice’s established strengths and separate evidence classes from unknowns.",instruction:"Review the real strategic overview. This portfolio is partner-review material and is not client-approved."},
+    {id:"D-02",title:"Capacity and Growth Boundary",target:"#capacityControls",text:"Growth is paced to a validated operating envelope—not campaign volume alone.",instruction:"Click AVAILABLE, LIMITED or HOLD in the highlighted control. The walkthrough will not continue until the real control registers.",requires:"capacity"},
+    {id:"D-03",title:"Qualified Patient Discovery",target:"#discovery",text:"A synthetic educational entry captures source, service interest, language preference and an administrative next step.",instruction:"Review how the interface avoids diagnosis, candidacy and availability claims."},
+    {id:"D-04",title:"Bilingual Administrative Entry",target:"#languageControls",text:"English or Spanish administrative preference can change the access path without implying universal clinical interpretation.",instruction:"You may select either language. Qualified language review and human escalation remain visible."},
+    {id:"D-05",title:"Inquiry Interpretation and Ownership",target:"#inquiry",text:"The inquiry becomes a nonclinical intent category with an explicit human owner, due time and escalation boundary.",instruction:"Notice what the system organizes—and what it deliberately does not interpret."},
+    {id:"D-06",title:"Service Education and Consultation Path",target:"#education",text:"Clinically reviewable placeholder education supports an owner-prioritized higher-consideration service journey.",instruction:"Review or switch the service example. All public clinical content still requires authorized review."},
+    {id:"D-07",title:"Capacity-Aware Human Routing",target:"#prepareRoute",text:"The interface may prepare a safe administrative recommendation, but it cannot complete an appointment or record.",instruction:"Click the highlighted Prepare staff review control. A local, unsent result must appear before Next.",requires:"route"},
+    {id:"D-08",title:"Relationship Continuity and Recovery",target:"#continuity",text:"Recare, inactive, cancellation and open-chair states are governed by eligibility, consent, suppression and capacity.",instruction:"Review the synthetic queue and the staff-approval gate before any proposed communication."},
+    {id:"D-09",title:"Referral and Reputation Support",target:"#reputation",text:"The workflow supports authentic review and referral processes without fabrication, incentives or gating.",instruction:"Public responses remain drafts until an authorized human approves them."},
+    {id:"D-10",title:"Digital Journey Reliability",target:"#reliability",text:"Canonical identity and pathway checks protect every growth journey.",instruction:"The patient-login observation is time-stamped for retest and is not presented as a guaranteed current defect."},
+    {id:"D-11",title:"Management View and Decision Gate",target:"#dashboard",text:"Leadership sees synthetic inquiries, dispositions, capacity, consultation activity, consent checks, workload signals and unresolved decisions.",instruction:"Metrics are illustrative. Leaders define thresholds and choose ADVANCE, REVISE, PAUSE or STOP."},
+    {id:"D-12",title:"Final Partner Review",target:"#decisions",text:"Close with what Netiers could build, what Ron and Hugh should decide, and what authorized practice leadership must validate.",instruction:"No financial model, pricing proposal or implementation authorization is included."}
+  ];
+
+  function showToast(message){
+    toast.textContent=message;toast.classList.add("show");
+    clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.remove("show"),1800);
+  }
+  function setMode(mode){
+    currentMode=mode;
+    landing.classList.add("hidden");app.classList.remove("hidden");
+    app.classList.remove("guided-mode","try-mode","full-mode");app.classList.add(mode+"-mode");
+    $$("[data-switch-mode]").forEach(b=>b.classList.toggle("active",b.dataset.switchMode===mode));
+    clearTourFocus();
+    if(mode==="guided"){guidePanel.classList.remove("hidden");tourIndex=0;routePrepared=false;completedActions.capacity=false;completedActions.route=false;renderTour();}
+    else{guidePanel.classList.add("hidden");tourArrow.classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});}
+    if(mode==="try") updateScenario("Mode opened");
+  }
+  function exitToLanding(){
+    clearTourFocus();guidePanel.classList.add("hidden");tourArrow.classList.add("hidden");
+    app.classList.add("hidden");landing.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});
+  }
+  $$("[data-enter-mode]").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.enterMode)));
+  $$("[data-switch-mode]").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.switchMode)));
+  $("#exitApp").addEventListener("click",exitToLanding);
+  $("#guideExit").addEventListener("click",exitToLanding);
+  $("#openFullFromTry").addEventListener("click",()=>setMode("full"));
+
+  function clearTourFocus(){
+    if(tourFocusTimer){clearTimeout(tourFocusTimer);tourFocusTimer=null;}
+    $$(".tour-focus").forEach(el=>el.classList.remove("tour-focus"));
+    tourArrow.classList.add("hidden");
+  }
+  function positionArrow(target){
+    if(window.innerWidth<760){tourArrow.classList.add("hidden");return;}
+    const r=target.getBoundingClientRect();
+    const x=Math.max(12,Math.min(window.innerWidth-50,r.left+Math.min(r.width/2,220)));
+    const y=Math.max(105,Math.min(window.innerHeight-80,r.top-46));
+    tourArrow.style.left=x+"px";tourArrow.style.top=y+"px";tourArrow.textContent="↓";tourArrow.classList.remove("hidden");
+  }
+  function renderTour(){
+    clearTourFocus();
+    const s=tourSteps[tourIndex],target=$(s.target);
+    $("#guideStep").textContent=s.id+" · "+(tourIndex+1)+" OF "+tourSteps.length;
+    $("#guideTitle").textContent=s.title;$("#guideText").textContent=s.text;$("#guideInstruction").textContent=s.instruction;
+    $("#guideProgress").style.width=((tourIndex+1)/tourSteps.length*100)+"%";
+    $("#guideBack").style.visibility=tourIndex===0?"hidden":"visible";
+    const done=!s.requires||completedActions[s.requires];
+    $("#guideNext").hidden=!done;
+    $("#guideNext").textContent=tourIndex===tourSteps.length-1?"Finish":"Next";
+    if(target){
+      target.scrollIntoView({behavior:"smooth",block:"center"});
+      tourFocusTimer=setTimeout(()=>{if(currentMode!=="guided")return;target.classList.add("tour-focus");positionArrow(target);},380);
+    }
+  }
+  $("#guideBack").addEventListener("click",()=>{if(tourIndex>0){tourIndex--;renderTour();}});
+  $("#guideNext").addEventListener("click",()=>{if(tourIndex<tourSteps.length-1){tourIndex++;renderTour();}else{showToast("Guided review complete — no live action taken.");setMode("full");}});
+  $("#guideRestart").addEventListener("click",()=>{tourIndex=0;completedActions.capacity=false;completedActions.route=false;routePrepared=false;$("#routeStatus").textContent="No action prepared.";renderTour();showToast("Guided walkthrough restarted.");});
+  window.addEventListener("resize",()=>{if(currentMode==="guided"){const t=$(tourSteps[tourIndex].target);if(t)positionArrow(t);}});
+
+  function capacityText(state){
+    if(state==="available") return {headline:"AVAILABLE — prepare an owner-approved next step",copy:"Interest may move to staff confirmation within the illustrative operating envelope.",route:"Available capacity: prepare a staff-confirmed consultation request.",owner:"Consultation coordinator + authorized clinical reviewer",next:"Prepare staff-confirmed consultation options",approval:"Staff confirmation and clinical boundary review"};
+    if(state==="hold") return {headline:"HOLD — stop activation and preserve the inquiry",copy:"Do not advance demand or relationship communication. Escalate to the owner-defined decision maker.",route:"Hold state: preserve the inquiry and request an owner decision.",owner:"Office manager + authorized owner",next:"Prepare hold notice for owner review",approval:"Owner decision before any further step"};
+    return {headline:"LIMITED — pace activity to staff review",copy:"Capture interest, preserve expectations and require staff confirmation before offering any administrative next step.",route:"Limited capacity: preserve interest and request pacing review.",owner:"Office manager + consultation coordinator",next:"Prepare nonclinical request for staff review",approval:"Capacity and staff confirmation"};
+  }
+  function setCapacity(state,register=true){
+    currentCapacity=state;
+    $$("[data-capacity-state]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.capacityState===state)));
+    const t=capacityText(state),box=$("#capacityResult");
+    box.classList.remove("hold","available");if(state==="hold")box.classList.add("hold");if(state==="available")box.classList.add("available");
+    $("#capacityHeadline").textContent=t.headline;$("#capacityCopy").textContent=t.copy;
+    $("#routeHeadline").textContent=t.route;$("#routeOwner").textContent=t.owner;$("#routeNext").textContent=t.next;$("#routeApproval").textContent=t.approval;
+    $("#dashCapacity").textContent=state.toUpperCase();
+    $("#routeStatus").textContent="Capacity state changed. No action prepared.";routePrepared=false;completedActions.route=false;
+    if(register){
+      completedActions.capacity=true;showToast(state.toUpperCase()+" capacity state registered.");
+      if(currentMode==="guided"&&tourSteps[tourIndex].requires==="capacity")renderTour();
+    }
+    updateScenario("Capacity control registered");
+  }
+  $$("[data-capacity-state]").forEach(b=>b.addEventListener("click",()=>setCapacity(b.dataset.capacityState,true)));
+
+  function setLanguage(lang){
+    currentLanguage=lang;
+    $$("[data-language]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.language===lang)));
+    if(lang==="spanish"){
+      $("#languageCopy").innerHTML="<strong>Preferencia administrativa en español seleccionada</strong><p class='small' style='margin:7px 0 0'>Podemos organizar su interés de servicio y solicitar contacto del personal autorizado. Para síntomas, urgencias o preguntas de tratamiento, debe responder personal clínico autorizado.</p>";
+    }else{
+      $("#languageCopy").innerHTML="<strong>English administrative preference selected</strong><p class='small' style='margin:7px 0 0'>We can organize your service interest and request contact from authorized staff. For symptoms, urgent concerns or treatment questions, licensed or authorized staff must respond.</p>";
+    }
+    showToast("Administrative language preference registered.");
+  }
+  $$("[data-language]").forEach(b=>b.addEventListener("click",()=>setLanguage(b.dataset.language)));
+
+  const education={
+    implants:{label:"IMPLANTS",title:"What an initial consultation may help clarify",body:"Goals, relevant history, questions about the process and what information an authorized clinician may need before discussing options."},
+    dentures:{label:"DENTURES",title:"What an initial consultation may help clarify",body:"Goals, current experience, administrative questions and what an authorized clinician may need to evaluate before discussing options."},
+    restorative:{label:"RESTORATIVE CARE",title:"What a consultation request may help organize",body:"The reason for the request, relevant administrative preferences and questions to reserve for an authorized clinician after examination."},
+    orthodontics:{label:"ORTHODONTICS",title:"What an initial consultation may help clarify",body:"Goals, prior history, scheduling preferences and questions that require an authorized clinician’s evaluation."}
+  };
+  function setEducation(key){
+    currentEducation=key;$$("[data-education]").forEach(b=>b.classList.toggle("active",b.dataset.education===key));
+    const e=education[key];
+    $("#educationContent").innerHTML="<div class='kicker'>PLACEHOLDER EDUCATION · "+e.label+"</div><h3>"+e.title+"</h3><p>"+e.body+"</p><div class='question-list'><div class='question'>What would you like to understand before requesting a consultation?</div><div class='question'>Do you prefer an English or Spanish administrative follow-up?</div><div class='question'>Would you like staff to contact you about consultation availability?</div></div>";
+    showToast(e.label+" example registered.");
+  }
+  $$("[data-education]").forEach(b=>b.addEventListener("click",()=>setEducation(b.dataset.education)));
+
+  $("#prepareRoute").addEventListener("click",()=>{
+    routePrepared=true;completedActions.route=true;
+    const action=currentCapacity==="hold"?"Hold prepared for owner review — NOT SENT.":"Staff review prepared locally — NOT SENT.";
+    $("#routeStatus").textContent=action;showToast(action);
+    if(currentMode==="guided"&&tourSteps[tourIndex].requires==="route")renderTour();
+  });
+
+  const tryEls=["tryService","tryLanguage","trySource","tryCapacity","tryRelationship","tryConsent"].map(id=>$("#"+id));
+  function selectedText(id){const el=$("#"+id);return el.options[el.selectedIndex].text;}
+  function updateScenario(reason){
+    if(!$("#tryService"))return;
+    const service=$("#tryService").value,lang=$("#tryLanguage").value,source=$("#trySource").value,capacity=$("#tryCapacity").value,relationship=$("#tryRelationship").value,consent=$("#tryConsent").value;
+    const highConsider=["implants","dentures","restorative","cosmetic","orthodontics"].includes(service);
+    let interpretation=highConsider?"Higher-consideration service information and consultation interest":"General administrative appointment interest";
+    if(relationship!=="new") interpretation+=" · "+selectedText("tryRelationship");
+    if(lang==="spanish") interpretation+=" · Spanish administrative path";
+    let owner=lang==="spanish"?"Bilingual front-office owner":"Front-office journey owner";
+    if(highConsider) owner+=" + consultation coordinator";
+    if(capacity==="hold"||consent==="suppressed") owner="Office manager + authorized owner";
+    let action="Prepare a nonclinical request for staff review";
+    let approval="Staff confirmation";
+    let warning="No automatic stop condition";
+    let warningNote="Clinical, privacy, language and workload boundaries still apply.";
+    if(capacity==="available") action=highConsider?"Prepare staff-confirmed consultation options":"Prepare staff-confirmed access options";
+    if(capacity==="limited"){action="Preserve interest and request pacing review";approval="Capacity and staff confirmation";}
+    if(capacity==="hold"){action="Stop progression and request an owner decision";approval="Owner approval before any further step";warning="STOP — illustrative capacity is HOLD";warningNote="No campaign, routing or relationship action should advance.";}
+    if(consent==="confirm"){action=capacity==="hold"?action:"Confirm communication eligibility before any draft";approval="Consent / preference confirmation + staff review";warning="Communication eligibility is unresolved";warningNote="No message may be prepared for use until current preference is confirmed.";}
+    if(consent==="suppressed"){action="Do not contact; preserve suppression and route for authorized review";approval="Privacy / authorized owner review only";warning="STOP — communication is suppressed";warningNote="Suppression overrides source, service and capacity states.";}
+    if(lang==="spanish"&&consent!=="suppressed"){approval+=" + qualified language review";warning=warning==="No automatic stop condition"?"Clinical interpretation coverage is unverified":warning;warningNote+=" Administrative Spanish does not establish clinical interpretation capability.";}
+    $("#outInterpretation").textContent=interpretation;
+    $("#outInterpretationNote").textContent="Source: "+selectedText("trySource")+". No symptoms, urgency, diagnosis or candidacy are interpreted.";
+    $("#outOwner").textContent=owner;$("#outOwnerNote").textContent="Human ownership role is illustrative and requires practice validation.";
+    $("#outAction").textContent=action;$("#outApproval").textContent=approval;
+    $("#outSummary").textContent=selectedText("tryService")+" · "+selectedText("tryLanguage")+" · "+selectedText("tryCapacity");
+    $("#outSummaryNote").textContent=selectedText("tryRelationship")+" · "+selectedText("tryConsent")+" · "+selectedText("trySource");
+    $("#outWarning").textContent=warning;$("#outWarningNote").textContent=warningNote;
+    $("#outWarningCard").classList.toggle("stop-card",capacity==="hold"||consent==="suppressed");
+    $("#dashboardScenarioSummary").innerHTML="<span>Hands-on scenario</span><strong>"+selectedText("tryService")+" · "+selectedText("tryLanguage")+" · "+selectedText("tryCapacity")+" · "+selectedText("tryConsent")+"</strong>";
+    if(reason){
+      registrationCount++;$("#registrationLine").textContent="Input registered · revision "+registrationCount+" · "+reason+". Selecting the displayed value also registers.";
+    }
+  }
+  tryEls.forEach(el=>{
+    el.addEventListener("change",()=>{if(el.id==="tryCapacity")setCapacity(el.value,false);updateScenario(el.previousElementSibling.textContent+" changed");});
+    el.addEventListener("pointerdown",()=>updateScenario(el.previousElementSibling.textContent+" control registered"));
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){updateScenario(el.previousElementSibling.textContent+" control registered");}});
+  });
+  function resetScenario(){
+    $("#tryService").value="implants";$("#tryLanguage").value="english";$("#trySource").value="education";$("#tryCapacity").value="limited";$("#tryRelationship").value="new";$("#tryConsent").value="eligible";
+    registrationCount=0;setCapacity("limited",false);updateScenario("Scenario reset");showToast("Synthetic scenario reset.");
+  }
+  $("#resetScenario").addEventListener("click",resetScenario);
+
+  $$("[data-decision]").forEach(b=>b.addEventListener("click",()=>{
+    $("#decisionResult").textContent=b.dataset.decision+" selected locally for partner review. No submission, external record or authorization was created.";
+    showToast("Local disposition: "+b.dataset.decision);
+  }));
+
+  $$("#sideNav [data-section]").forEach(b=>b.addEventListener("click",()=>{
+    const target=$("#"+b.dataset.section);if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+    $$("#sideNav [data-section]").forEach(x=>x.classList.toggle("active",x===b));
+  }));
+
+  function resetAll(){
+    setCapacity("limited",false);setLanguage("english");setEducation("implants");resetScenario();
+    $("#routeStatus").textContent="No action prepared.";routePrepared=false;completedActions.capacity=false;completedActions.route=false;
+    $("#decisionResult").textContent="No local disposition selected. Nothing is submitted or saved outside this file.";
+    if(currentMode==="guided"){tourIndex=0;renderTour();}
+    showToast("All local demonstration controls reset.");
+  }
+  $("#resetAll").addEventListener("click",resetAll);
+
+  setCapacity("limited",false);setLanguage("english");setEducation("implants");updateScenario();
+  clearTimeout(showToast.timer);toast.classList.remove("show");
+})();
+</script>
+</body>
+</html>
